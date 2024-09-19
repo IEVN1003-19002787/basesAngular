@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { IProducto } from '../producto';
 
 @Component({
   selector: 'app-product-list',
@@ -16,7 +17,7 @@ export class ProductListComponent {
   showImage():void{
     this.muestraImg=!this.muestraImg;
   }
-  productos:any[]=[
+  productos:IProducto[]=[
     {
       "productoId":1,
       "Modelo":'Sentra',
