@@ -1,15 +1,17 @@
 <form>
-    <div class="form-group">
-      <label for="Num1">Num1</label>
-      <input type="num1" [{ngModel}]="num1" class="form-control" id="Num1" placeholder="Enter email">
-      
-    <div class="form-group">
-        <label for="Num2">Num2</label>
-        <input type="num2" [{ngModel}]="num2" class="form-control" id="Num2" placeholder="Enter email">
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
-
-<div class="col-6">
-    <h2>resultado: </h2>
-</div>
+  <div class="mb-3">
+    <label for="" class="form-label">Numero 1</label>
+    <input type="number" class="form-control" [(ngModel)]="num1" name="num1">
+  </div>
+  
+  <div class="mb-3">
+    <label for="" class="form-label">Numero 2</label>
+    <input type="number" class="form-control" [(ngModel)]="num2" name="num2">
+  </div>
+  
+  <button (click)="sumar()" type="button" class="btn btn-primary">Sumar</button>
+  
+  <div class="col-6">
+    <h2>El resultado es: {{resultado}}</h2>
+  </div>
+</form>
