@@ -1,4 +1,29 @@
-<p>cinepolis-angular works!</p>
-<h1>
-    
-</h1>
+
+<div class="container">
+    <h1>Cinepolis Silao</h1>
+    <form (ngSubmit)="Calculo()">
+      <label
+      for="nombre">Nombre del comprador:</label>
+      <input type="text" id="nombre" [(ngModel)]="nombre" name="nombre" required />
+
+      <label for="cantidad">Cantidad de Personas:</label>
+      <input type="number" id="cantidad" [(ngModel)]="cantPersonas" name="cantPersonas" required />
+  
+      <label for="cantidad">Cantidad de Boletos:</label>
+      <input type="number" id="cantidad" [(ngModel)]="cantBoletos" name="cantBoletos" required />
+  
+      <label for="cineco">Tarjeta Cineco?</label>
+      <input type="checkbox" id="cineco" [(ngModel)]="Cineco" name="Cineco" />
+  
+      <button type="submit">Procesar</button>
+      <button class="Salir" type="submit">Salir</button>
+    </form>
+  
+    <div *ngIf="total > 0">
+      <h2>Ticket de compra</h2>
+      <p>Nombre: {{ nombre }}</p>
+      <p>Cantidad de Boletos: {{ cantBoletos }}</p>
+      <p>Cantidad de PErsonas: {{ cantPersonas }}</p>
+      <p>Total a Pagar: ${{ total }}</p>
+    </div>
+  </div>
