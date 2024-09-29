@@ -1,0 +1,127 @@
+
+import { Component } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+
+@Component({
+  selector: 'app-resistencias',
+  templateUrl: './resistencias.component.html',
+  styleUrls: ['./resistencias.component.css']
+})
+export class ResistenciasComponent {
+  colores: string[] = ['Negro', 'Café', 'Naranja', 'Rojo', 'Amarillo', 'Verde', 'Azul', 'Violeta', 'Gris', 'Blanco'];
+  registros: any[] = [];
+  resistenciaForm: FormGroup;
+  constructor(private fb: FormBuilder) {
+    this.resistenciaForm = this.fb.group({
+      color1: ['', Validators.required],
+      color2: ['', Validators.required],
+      color3: ['', Validators.required],
+      tolerancia: ['', Validators.required]
+    });
+  }
+  calValor(): number {
+    const valores: { [key: string]: number } = {
+      'Negro': 0,
+      'Café': 1,
+      'Rojo': 2,
+      'Naranja': 3,
+      'Amarillo': 4,
+      'Verde': 5,
+      'Azul': 6,
+      'Violeta': 7,
+      'Gris': 8,
+      'Blanco': 9
+    };
+    const formValues = this.resistenciaForm.value;
+    const valor = (valores[formValues.color1] * 10 + valores[formValues.color2]) * Math.pow(10, valores[formValues.color3]);
+    return valor;
+  }
+  calTolerancia(): number {
+    return this.resistenciaForm.value.tolerancia === 'Oro' ? 5 : 10;
+  }
+  onSubmit(): void {
+    if (this.resistenciaForm.valid) {
+      const valor = this.calValor();
+      const toleranciaPorcentaje = this.calTolerancia();
+      const valorMax = valor + (valor * toleranciaPorcentaje / 100);
+      const valorMin = valor - (valor * toleranciaPorcentaje / 100);
+      this.registros.push({
+        color1: this.resistenciaForm.value.color1,
+        color2: this.resistenciaForm.value.color2,
+        color3: this.resistenciaForm.value.color3,
+        tolerancia: this.resistenciaForm.value.tolerancia,
+        valor: valor,
+        valorMax: valorMax,
+        valorMin: valorMin
+      });
+      this.resistenciaForm.reset();
+    }
+  }
+  getColor(color: string): string {
+    const colorHex: { [key: string]: string } = {
+      'Negro': '#000000',
+      'Café': '#6F4E37',
+      'Rojo': '#ff0000',
+      'Naranja': '#FFA500',
+      'Amarillo': '#FFFF00',
+      'Verde': '#008000',
+      'Azul': '#0000FF',
+      'Violeta': '#8A2BE2',
+      'Gris': '#808080',
+      'Blanco': '#FFFFFF'
+    };
+    return colorHex[color] || '#FFFFFF';
+  }
+}
+
+
+<form [formGroup]="resistenciaForm" (ngSubmit)="onSubmit()">
+  <label for="color1">1 Banda</label>
+  <select id="color1" formControlName="color1">
+    <option *ngFor="let color of colores" [value]="color">{{ color }}</option>
+  </select>
+
+  <label for="color2">2 Banda</label>
+  <select id="color2" formControlName="color2">
+    <option *ngFor="let color of colores" [value]="color">{{ color }}</option>
+  </select>
+
+  <label for="color3">3 Banda</label>
+  <select id="color3" formControlName="color3">
+    <option *ngFor="let color of colores" [value]="color">{{ color }}</option>
+  </select>
+  <br>
+  <br>
+  <label for="tolerancia">Tolerancia</label>
+  <br>
+  <label><input type="radio" formControlName="tolerancia" value="Oro"> Oro 5%</label>
+  <br>
+  <label><input type="radio" formControlName="tolerancia" value="Plata"> Plata 10%</label>
+  <br>
+  <button type="submit" [disabled]="!resistenciaForm.valid">Registrar</button>
+</form>
+  <br>
+<table>
+  <thead>
+    <tr>
+      <th>Color1</th>
+      <th>Color2</th>
+      <th>Color3</th>
+      <th>Tolerancia</th>
+      <th>Valor</th>
+      <th>Valor Máximo</th>
+      <th>Valor Mínimo</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let registro of registros">
+      <td [style.background-color]="getColor(registro.color1)">{{ registro.color1 }}</td>
+      <td [style.background-color]="getColor(registro.color2)">{{ registro.color2 }}</td>
+      <td [style.background-color]="getColor(registro.color3)">{{ registro.color3 }}</td>
+      <td>{{ registro.tolerancia }}</td>
+      <td>{{ registro.valor }}</td>
+      <td>{{ registro.valorMax }}</td>
+      <td>{{ registro.valorMin }}</td>
+    </tr>
+  </tbody>
+</table>

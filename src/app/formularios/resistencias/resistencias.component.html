@@ -1,0 +1,56 @@
+<br>
+  <form [formGroup]="form" (ngSubmit)="calculate()">
+    <div class="caja">
+      <label for="color1">Color 1</label>
+      <select id="color1" formControlName="color1">
+        <option value="" disabled selected></option>
+        <option *ngFor="let color of colors">{{ color }}</option>
+      </select>
+
+      <label for="color2">Color 2</label>
+      <select id="color2" formControlName="color2">
+        <option value="" disabled selected></option>
+        <option *ngFor="let color of colors">{{ color }}</option>
+      </select>
+
+      <label for="color3">Color 3</label>
+      <select id="color3" formControlName="color3">
+        <option value="" disabled selected></option>
+        <option *ngFor="let color of colors">{{ color }}</option>
+      </select>
+    </div>
+<br>
+    <div class="Tolerancia">
+      <label>Tolerancia</label><br>
+      <input type="radio" formControlName="tolerance" [value]="5"> Oro 5% 
+      <br>
+      <input type="radio" formControlName="tolerance" [value]="10"> Plata 10%
+    </div>
+    <br>
+    <button type="submit" class="boton">Registrar</button>
+  </form>
+    <br>
+  <table *ngIf="showResults">
+    <thead>
+    <tr>
+      <th>Color1</th>
+      <th>Color2</th>
+      <th>Color3</th>
+      <th>Tolerancia</th>
+      <th>Valor</th>
+      <th>Valor Máximo</th>
+      <th>Valor Mínimo</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td [ngStyle]="{'background-color': getColorStyle(form.get('color1')?.value)}">{{ form.get('color1')?.value }}</td>
+      <td [ngStyle]="{'background-color': getColorStyle(form.get('color2')?.value)}">{{ form.get('color2')?.value }}</td>
+      <td [ngStyle]="{'background-color': getColorStyle(form.get('color3')?.value)}">{{ form.get('color3')?.value }}</td>
+      <td>{{ form.get('tolerance')?.value }}%</td>
+      <td>{{ valorResis }}</td>
+      <td>{{ valorMax }}</td>
+      <td>{{ valorMin }}</td>
+    </tr>
+  </tbody>
+  </table>
